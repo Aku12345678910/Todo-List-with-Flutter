@@ -46,20 +46,25 @@ class TodoHomePage extends StatefulWidget {
 
 class _TodoHomePageState extends State<TodoHomePage> {
   final List<String> _todos = [];
+  final List<String> _filteredTodos = [];
   final TextEditingController _controller = TextEditingController();
+  final TextEditingController _searchController = TextEditingController();
 
   @override
   void initState() {
     super.initState();
     _loadTodos();
+    _searchController.addListener(_filterTodos);
   }
 
   Future<void> _loadTodos() async {
     final prefs = await SharedPreferences.getInstance();
     final String? todosString = prefs.getString('todos');
     if (todosString != null) {
+      final todosList = List<String>.from(jsonDecode(todosString));
       setState(() {
-        _todos.addAll(List<String>.from(jsonDecode(todosString)));
+        _todos.addAll(todosList);
+        _filteredTodos.addAll(todosList);
       });
     }
   }
@@ -77,14 +82,39 @@ class _TodoHomePageState extends State<TodoHomePage> {
         _controller.clear();
       });
       _saveTodos();
+      _filterTodos();
     }
   }
 
   void _removeTodo(int index) {
+    final todoToRemove = _filteredTodos[index];
     setState(() {
-      _todos.removeAt(index);
+      _todos.remove(todoToRemove);
     });
     _saveTodos();
+    _filteredTodos();
+  }
+
+  void _filterTodos() {
+    final query = _searchController.text.toLowerCase();
+    setState(() {
+      if (query.isEmpty) {
+        _filteredTodos
+          ..clear()
+          ..addAll(_todos);
+      } else {
+        _filteredTodos
+          ..clear()
+          ..addAll(_todos.where((todo) => todo.toLowerCase().contains(query)));
+      }
+    });
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    _searchController.dispose();
+    super.dispose();
   }
 
   @override
