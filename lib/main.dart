@@ -127,7 +127,7 @@ class _TodoHomePageState extends State<TodoHomePage> {
           children: [
             TextField(
               controller: _searchController,
-              decoration: const InputController(
+              decoration: const InputDecoration(
                 labelText: 'Cari Tugas',
                 prefixIcon: Icon(Icons.search),
                 border: OutlineInputBorder(),
