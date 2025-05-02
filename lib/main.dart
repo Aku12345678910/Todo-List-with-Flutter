@@ -125,6 +125,15 @@ class _TodoHomePageState extends State<TodoHomePage> {
         padding: const EdgeInsets.all(16.0),
         child: Column(
           children: [
+            TextField(
+              controller: _searchController,
+              decoration: const InputController(
+                labelText: 'Cari Tugas',
+                prefixIcon: Icon(Icons.search),
+                border: OutlineInputBorder(),
+              ),
+            ),
+            const SizedBox(height: 16),
             Row(
               children: [
                 Expanded(
@@ -146,11 +155,11 @@ class _TodoHomePageState extends State<TodoHomePage> {
             const SizedBox(height: 16),
             Expanded(
               child: ListView.builder(
-                itemCount: _todos.length,
+                itemCount: _filteredTodos.length,
                 itemBuilder: (context, index) {
                   return Card(
                     child: ListTile(
-                      title: Text(_todos[index]),
+                      title: Text(_filteredTodos[index]),
                       trailing: IconButton(
                         icon: const Icon(Icons.delete),
                         onPressed: () => _removeTodo(index),
