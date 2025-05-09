@@ -1,32 +1,31 @@
 import 'package:flutter/material.dart';
+import 'package:todo_list/constraints/colors.dart';
 
 class Home extends StatelessWidget {
-  const Home({super.key});
+  const Home({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Halaman Utama')),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
+      appBar: AppBar(
+        backgroundColor: tdBGColor,
+        elevation: 0,
+        title: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Text(
-              'Selamat Datang',
-              style: Theme.of(context).textTheme.titleLarge,
-            ),
-            const SizedBox(height: 10),
-            ElevatedButton(
-              style: ElevatedButton.styleFrom(
-                backgroundColor: Theme.of(context).primaryColor,
-                foregroundColor: Colors.white,
+            Icon(Icons.menu, color: tdBlack, size: 38),
+            Container(
+              height: 40,
+              width: 40,
+              child: ClipRRect(
+                borderRadius: BorderRadius.circular(20),
+                child: Image.asset('assets/images/logo.png'),
               ),
-              onPressed: () {},
-              child: const Text('Klik Di Sini'),
             ),
           ],
         ),
       ),
+      body: Container(child: const Center(child: Text('This is home screen'))),
     );
   }
 }
